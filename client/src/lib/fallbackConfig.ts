@@ -4,6 +4,10 @@ export const fallbackPool: string[] = [
   '/images/fallback1.jpg',
   '/images/fallback2.jpg', 
   '/images/fallback3.jpg',
+  '/images/fallback4.jpg',
+  '/images/fallback5.jpg', 
+  '/images/fallback6.jpg',
+  '/images/fallback7.jpg',
   // 添加更多图片路径...
 ]
 
