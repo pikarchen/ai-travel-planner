@@ -25,6 +25,8 @@ GitHub Repository: `https://github.com/pikarchen/ai-travel-planner`
 
 ## 📦 快速开始
 
+> 💡 **助教快速体验**：推荐使用"方式二：Docker 运行"中的"方式 2.1"，下载预构建镜像文件后直接运行，最快 2 分钟即可体验完整功能。
+
 ### 方式一：本地开发
 
 1. **克隆仓库**
@@ -50,11 +52,16 @@ npm install -w server
 
 ### 方式二：Docker 运行（推荐）
 
-#### 方式 2.1：使用预构建镜像文件（最简单）
+#### 方式 2.1：使用预构建镜像文件（⭐推荐，最简单）
+
+**适用于**：想要快速体验项目，不想从源码构建。
+
+**注意**：如果 GitHub Releases 中没有镜像文件，请使用方式 2.2 从源码构建。
 
 1. **下载 Docker 镜像文件**
    - 访问 GitHub Releases：https://github.com/pikarchen/ai-travel-planner/releases
-   - 下载 `ai-travel-planner-latest.tar` 文件
+   - 找到最新的 Release（如 v1.0.0）
+   - 下载 `ai-travel-planner-latest.tar` 文件（约 140MB）
 
 2. **加载镜像**
    ```bash
@@ -83,6 +90,21 @@ npm install -w server
 
 5. **访问应用**
    - 打开浏览器访问：http://localhost:8787
+   - 如果一切正常，应该能看到应用首页
+
+**完整命令示例（一行版本）：**
+```bash
+# 下载镜像后，在同一目录执行：
+docker load -i ai-travel-planner-latest.tar && \
+echo "PORT=8787
+NODE_ENV=production
+DEEPSEEK_API_KEY=sk-893615dceced4e4889c5bcd51b5e3bd4
+DEEPSEEK_MODEL=deepseek-chat
+XF_APPID=208f7732
+XF_API_KEY=ff2b3d7b534a2a0ba935257d5da2ba84
+XF_API_SECRET=YzU0M2JiM2JkMjhiYTk3ZmQxNjRiZjNh" > server.env && \
+docker run -d -p 8787:8787 --name ai-travel-planner --env-file ./server.env ai-travel-planner:latest
+```
 
 #### 方式 2.2：从源码构建 Docker 镜像
 
