@@ -4,8 +4,7 @@
 
 ## 🚀 项目地址
 
-GitHub Repository: `https://github.com/你的用户名/ai-travel-planner`  
-（请替换为你的实际 GitHub 仓库地址）
+GitHub Repository: `https://github.com/pikarchen/ai-travel-planner`
 
 ## ✨ 核心功能
 
@@ -30,7 +29,7 @@ GitHub Repository: `https://github.com/你的用户名/ai-travel-planner`
 
 1. **克隆仓库**
 ```bash
-git clone https://github.com/你的用户名/ai-travel-planner.git
+git clone https://github.com/pikarchen/ai-travel-planner.git
 cd ai-travel-planner
 ```
 
@@ -49,46 +48,68 @@ npm install -w server
    - 终端1：`npm run dev:server` （后端：http://localhost:8787）
    - 终端2：`npm run dev` （前端：http://localhost:5173）
 
-### 方式二：Docker 运行
+### 方式二：Docker 运行（推荐）
 
-#### 使用预构建镜像（推荐）
+#### 方式 2.1：使用预构建镜像文件（最简单）
+
+1. **下载 Docker 镜像文件**
+   - 访问 GitHub Releases：https://github.com/pikarchen/ai-travel-planner/releases
+   - 下载 `ai-travel-planner-latest.tar` 文件
+
+2. **加载镜像**
+   ```bash
+   docker load -i ai-travel-planner-latest.tar
+   ```
+
+3. **创建环境变量文件** `server.env`：
+   ```env
+   PORT=8787
+   NODE_ENV=production
+   DEEPSEEK_API_KEY=sk-893615dceced4e4889c5bcd51b5e3bd4
+   DEEPSEEK_MODEL=deepseek-chat
+   XF_APPID=208f7732
+   XF_API_KEY=ff2b3d7b534a2a0ba935257d5da2ba84
+   XF_API_SECRET=YzU0M2JiM2JkMjhiYTk3ZmQxNjRiZjNh
+   ```
+
+4. **运行容器**
+   ```bash
+   docker run -d \
+     -p 8787:8787 \
+     --name ai-travel-planner \
+     --env-file ./server.env \
+     ai-travel-planner:latest
+   ```
+
+5. **访问应用**
+   - 打开浏览器访问：http://localhost:8787
+
+#### 方式 2.2：从源码构建 Docker 镜像
 
 ```bash
-# 拉取镜像（请替换为你的阿里云镜像地址）
-docker pull registry.cn-hangzhou.aliyuncs.com/你的命名空间/ai-travel-planner:latest
-
-# 运行容器
-docker run -d \
-  -p 8787:8787 \
-  --name ai-travel-planner \
-  --env-file ./server/.env \
-  registry.cn-hangzhou.aliyuncs.com/你的命名空间/ai-travel-planner:latest
-```
-
-#### 本地构建 Docker 镜像
-
-```bash
-# 构建镜像
+# 1. 构建镜像
 docker build -t ai-travel-planner:latest .
 
-# 运行容器
+# 2. 创建环境变量文件 server.env（内容同上）
+# 3. 运行容器
 docker run -d \
   -p 8787:8787 \
   --name ai-travel-planner \
-  --env-file ./server/.env \
+  --env-file ./server.env \
   ai-travel-planner:latest
 ```
 
-### 方式三：Docker Compose（推荐用于本地测试）
+#### 方式 2.3：使用 Docker Compose（推荐用于本地测试）
 
 ```bash
-# 启动所有服务
+# 1. 创建 server.env 文件（内容同上）
+# 2. 启动所有服务
 docker-compose up -d
 
-# 查看日志
+# 3. 查看日志
 docker-compose logs -f
 
-# 停止服务
+# 4. 停止服务
 docker-compose down
 ```
 
@@ -184,30 +205,36 @@ ai-travel-planner/
 └── README.md
 ```
 
-## 🚢 部署说明
+## 🚢 Docker 镜像构建与发布
 
-### GitHub Actions 自动构建
-
-项目配置了 GitHub Actions 工作流，当推送标签（如 `v1.0.0`）时会自动构建并推送 Docker 镜像到阿里云容器镜像服务。
-
-#### 配置 GitHub Secrets
-
-在 GitHub 仓库 Settings → Secrets and variables → Actions 中添加：
-
-- `ALIYUN_REGISTRY_USERNAME`: 阿里云容器镜像服务用户名
-- `ALIYUN_REGISTRY_PASSWORD`: 阿里云容器镜像服务密码
-- `ALIYUN_REGISTRY_NAMESPACE`: 镜像仓库命名空间
-
-#### 触发构建
+### 构建 Docker 镜像
 
 ```bash
-git tag v1.0.0
-git push origin v1.0.0
+# 在项目根目录执行
+docker build -t ai-travel-planner:latest .
 ```
 
-构建完成后，镜像地址：
+### 导出镜像文件
+
+```bash
+# 导出为 tar 文件
+docker save -o ai-travel-planner-latest.tar ai-travel-planner:latest
 ```
-registry.cn-hangzhou.aliyuncs.com/你的命名空间/ai-travel-planner:latest
+
+### 发布到 GitHub Releases
+
+1. 访问 GitHub 仓库：https://github.com/pikarchen/ai-travel-planner
+2. 点击 "Releases" → "Create a new release"
+3. 填写版本号（如 `v1.0.0`）和发布说明
+4. 上传 `ai-travel-planner-latest.tar` 文件
+5. 点击 "Publish release"
+
+### 使用导出的镜像
+
+下载镜像文件后，使用以下命令加载：
+
+```bash
+docker load -i ai-travel-planner-latest.tar
 ```
 
 ## 📱 使用说明
