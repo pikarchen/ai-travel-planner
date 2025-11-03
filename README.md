@@ -320,4 +320,4 @@ docker load -i ai-travel-planner-latest.tar
 
 ---
 
-**最后更新**：2025年1月
+**最后更新**：2024年11月
