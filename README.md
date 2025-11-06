@@ -173,6 +173,11 @@ VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
 VITE_FIREBASE_APP_ID=your_app_id
 ```
 
+**⚠️ 重要提示**：Firebase 服务（包括 Authentication 和 Firestore）在中国大陆地区可能无法直接访问，需要配置代理/VPN 才能正常使用。如果无法访问 Firebase：
+- 登录功能将不可用（会显示配置错误提示）
+- 数据存储功能将不可用（无法保存行程和费用）
+- 应用的其他功能（AI 生成行程、地图显示等）不受影响，可以正常使用
+
 #### 4. 高德地图（可选）
 
 在 `client/.env` 中配置：
@@ -285,14 +290,20 @@ docker load -i ai-travel-planner-latest.tar
    - 使用 `.env` 文件存储，并确保 `.gitignore` 已正确配置
    - 生产环境使用环境变量或密钥管理服务
 
-2. **Firebase 安全规则**：
+2. **网络访问要求**：
+   - **Firebase 服务**：在中国大陆地区访问 Firebase（Authentication、Firestore）可能需要代理/VPN。如果无法访问，登录和数据存储功能将不可用，但其他功能（AI 生成、地图显示）不受影响。
+   - **高德地图**：国内可直接访问，无需代理。
+   - **DeepSeek API**：国内可直接访问，无需代理。
+   - **科大讯飞 API**：国内可直接访问，无需代理。
+
+3. **Firebase 安全规则**：
    - 生产环境需要配置严格的 Firestore 安全规则
    - 开发时可以使用测试模式，但务必在生产前修改
 
-3. **高德地图配额**：
+4. **高德地图配额**：
    - 免费版有 QPS 限制，如遇限流请控制请求频率或升级服务
 
-4. **Docker 镜像大小**：
+5. **Docker 镜像大小**：
    - 当前镜像约 200-300MB，如需优化可考虑多阶段构建优化
 
 ## 🔍 故障排查
@@ -310,6 +321,13 @@ docker load -i ai-travel-planner-latest.tar
 - 检查 `client/.env` 中的高德地图配置
 - 确认高德控制台的 Referer 白名单包含 `http://localhost:5173`
 
+### Firebase 无法连接（登录/数据存储失败）
+- **可能原因**：网络无法访问 Firebase 服务（在中国大陆地区常见）
+- **解决方案**：
+  1. 配置代理/VPN 后重试
+  2. 或者暂时跳过登录功能，直接使用 AI 生成和地图功能（这些功能不依赖 Firebase）
+- **判断方法**：打开浏览器控制台，查看是否有 Firebase 相关的网络错误（如 `firebaseapp.com` 连接失败）
+
 ## 📄 许可证
 
 本项目为课程作业项目，仅供学习交流使用。
@@ -320,4 +338,4 @@ docker load -i ai-travel-planner-latest.tar
 
 ---
 
-**最后更新**：2024年11月
+**最后更新**：2025年11月
