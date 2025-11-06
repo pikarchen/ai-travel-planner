@@ -14,7 +14,7 @@ const app = express()
 
 // 生产环境提供前端静态文件
 if (process.env.NODE_ENV === 'production') {
-  const clientDist = path.resolve(__dirname, '../client/dist')
+  const clientDist = path.resolve(__dirname, '../../client/dist')
   app.use(express.static(clientDist))
 }
 
@@ -74,7 +74,7 @@ app.get('/api/xf/iat-url', (req: Request, res: Response) => {
 if (process.env.NODE_ENV === 'production') {
   app.get('*', (req: Request, res: Response) => {
     if (!req.path.startsWith('/api')) {
-      res.sendFile(path.join(__dirname, '../client/dist/index.html'))
+      res.sendFile(path.join(__dirname, '../../client/dist/index.html'))
     }
   })
 }
